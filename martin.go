@@ -1,4 +1,4 @@
-package pongo2martin
+package pongo2martini
 
 import (
 	"net/http"
@@ -14,7 +14,7 @@ import (
 //  m.RunOnAddr(":9005")
 
 type MartinRender interface {
-	HTML(name string, data interface{})
+	HTML(status int, name string, data interface{})
 }
 
 type martinRender struct {
@@ -23,7 +23,8 @@ type martinRender struct {
 	render *pongo2render.Render
 }
 
-func (this *martinRender) HTML(name string, data interface{}) {
+func (this *martinRender) HTML(status int, name string, data interface{}) {
+	this.res.WriteHeader(status)
 	this.render.GetHTML(name).ExecuteWriter(this.res, data)
 }
 
